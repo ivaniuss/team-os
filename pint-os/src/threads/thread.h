@@ -89,10 +89,10 @@ struct thread
     uint8_t *stack;                     /* Saved stack pointer. */
     int priority;                       /* Priority. */
     struct list_elem allelem;           /* List element for all threads list. */
-    int64_t blocked_ticks;
+
     /* Shared between thread.c and synch.c. */
     struct list_elem elem;              /* List element. */
-
+    int64_t blocked_ticks;
 #ifdef USERPROG
     /* Owned by userprog/process.c. */
     uint32_t *pagedir;                  /* Page directory. */
@@ -112,6 +112,12 @@ void thread_start (void);
 
 void thread_tick (void);
 void thread_print_stats (void);
+
+void thread_sleep(int64_t ticks);
+void thread_awake(int64_t ticks);
+int64_t get_next_tick_to_awake(void);
+void update_next_tick_to_awake(int64_t ticks);
+
 
 typedef void thread_func (void *aux);
 tid_t thread_create (const char *name, int priority, thread_func *, void *);

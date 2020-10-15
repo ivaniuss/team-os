@@ -37,12 +37,16 @@ static struct thread *initial_thread;
 /* Lock used by allocate_tid(). */
 static struct lock tid_lock;
 
-/* Stack frame for kernel_thread(). */
+
+
 
 
 static struct list sleep_list;
 static int64_t next_tick_to_awake;
 
+
+
+/* Stack frame for kernel_thread(). */
 struct kernel_thread_frame 
   {
     void *eip;                  /* Return address. */
@@ -97,9 +101,8 @@ thread_init (void)
   lock_init (&tid_lock);
   list_init (&ready_list);
   list_init (&all_list);
-
   list_init (&sleep_list);
-  
+
   /* Set up a thread structure for the running thread. */
   initial_thread = running_thread ();
   init_thread (initial_thread, "main", PRI_DEFAULT);
@@ -321,15 +324,18 @@ thread_yield (void)
   intr_set_level (old_level);
 }
 
+
+
 void thread_sleep(int64_t ticks){
   
   struct thread *current_thread;
   enum intr_level old_level;
-  
-  current_thread = thread_current();
+
   old_level = intr_disable();
+  current_thread = thread_current();
 
   ASSERT(current_thread != idle_thread);
+
   current_thread->blocked_ticks = ticks;
   
   update_next_tick_to_awake(current_thread->blocked_ticks);
@@ -369,6 +375,7 @@ void thread_awake(int64_t wakeup_tick){
     }
   }
 }
+
 
 
 
