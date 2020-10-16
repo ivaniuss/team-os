@@ -38,7 +38,10 @@ static struct thread *initial_thread;
 static struct lock tid_lock;
 
 
-
+bool thread_compare_priority (const struct list_elem *a, const struct list_elem *b, void *aux UNUSED)
+{
+	return list_entry (a, struct thread, elem)->priority>list_entry (b, struct thread, elem)->priority;
+}
 
 
 static struct list sleep_list;
@@ -664,3 +667,15 @@ allocate_tid (void)
    Used by switch.S, which can't figure it out on its own. */
 uint32_t thread_stack_ofs = offsetof (struct thread, stack);
 
+<<<<<<< HEAD
+=======
+
+void test_max_priority (void)
+{
+  if ( !list_empty(&ready_list) && thread_current()->priority
+        < list_entry(list_front(&ready_list), struct thread, elem)->priority )
+  {
+    thread_yield ();
+  }
+}
+>>>>>>> 8eb27d16ee507208c5f6a7c318f95f35c16a602b
